@@ -395,7 +395,7 @@ class QueryCollection extends Backbone.Collection
 
 	# Has Model
 	# Does this model exist within our collection?
-	hasModel: (model) ->
+	contains: (model) ->
 		# Prepare
 		model or= {}
 
@@ -420,7 +420,7 @@ class QueryCollection extends Backbone.Collection
 	# Remove an item from the collection, only if it exists within the collection
 	# Useful for bypassing the "already exists" warning
 	safeRemove: (model) ->
-		exists = @hasModel(model)
+		exists = @contains(model)
 		if exists
 			this.remove(model)
 		@
@@ -429,7 +429,7 @@ class QueryCollection extends Backbone.Collection
 	# Add an item from the collection, only if it doesn't exist within the collection
 	# Useful for bypassing the "already exists" warning
 	safeAdd: (model) ->
-		exists = @hasModel(model)
+		exists = @contains(model)
 		unless exists
 			this.add(model)
 		@
@@ -690,7 +690,7 @@ class QueryCollection extends Backbone.Collection
 	# and if it doesn't then we should remove the model from our own
 	onParentChange: (model) =>
 		return @query()  if @getPaging()
-		pass = @test(model) and @getParentCollection().hasModel(model)
+		pass = @test(model) and @getParentCollection().contains(model)
 		if pass
 			@safeAdd(model)
 		else
